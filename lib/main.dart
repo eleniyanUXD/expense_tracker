@@ -1,32 +1,54 @@
+import 'package:expense_tracker/features/transactions/presentation/add_transaction_screen.dart';
+import 'package:expense_tracker/features/transactions/presentation/edit_transaction_screen.dart';
 import 'package:flutter/material.dart';
-import 'screens/auth_screen.dart';
-import 'screens/main_navigation.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:expense_tracker/database/app_database.dart';
+import 'package:expense_tracker/database/daos/transaction_dao.dart';
+import 'package:expense_tracker/features/transactions/data/transaction_repository.dart';
+import 'package:expense_tracker/features/transactions/presentation/transaction_provider.dart';
+import 'package:expense_tracker/features/transactions/models/transaction_model.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Hive.initFlutter();
-  await Hive.openBox('transactions');
+  // Initialize Hive database first
+  await AppDatabase.init();
 
-  runApp(const MyApp());
+  // Create the database layers
+  final transactionDao = TransactionDao();
+  final transactionRepository = TransactionRepository(transactionDao);
+
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) =>
+          TransactionProvider(transactionRepository)..loadTransactions(),
+      child: const ExpenseTrackerApp(),
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class ExpenseTrackerApp extends StatelessWidget {
+  const ExpenseTrackerApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Expense Tracker',
-
-      initialRoute: '/auth',
-
-      routes: {
-        '/auth': (context) => const AuthScreen(),
-        '/home': (context) => const MainNavigation(),
-      },
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      ),
+      home: EditTransactionScreen(
+        transaction: TransactionModel(
+          id: 'test-001',
+          title: 'Lunch',
+          amount: 2500,
+          category: 'Food',
+          type: 'expense',
+          date: DateTime.now(),
+        ),
+      ),
     );
   }
 }
