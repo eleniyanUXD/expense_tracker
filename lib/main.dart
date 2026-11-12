@@ -8,7 +8,7 @@ import 'package:expense_tracker/database/app_database.dart';
 import 'package:expense_tracker/database/daos/transaction_dao.dart';
 import 'package:expense_tracker/features/transactions/data/transaction_repository.dart';
 import 'package:expense_tracker/features/transactions/presentation/transaction_provider.dart';
-import 'package:expense_tracker/features/transactions/models/transaction_model.dart';
+import 'package:expense_tracker/navigation/main_navigation.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,7 +41,7 @@ class ExpenseTrackerApp extends StatelessWidget {
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: DashboardScreen(),
+      home: const MainNavigation(),
     );
   }
 }

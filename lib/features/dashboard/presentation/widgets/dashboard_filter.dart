@@ -23,6 +23,9 @@ class _DashboardFilterState extends State<DashboardFilter> {
         final isSelected = selectedFilter == filter;
 
         return ChoiceChip(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
           label: Text(
             filter,
             style: TextStyle(
