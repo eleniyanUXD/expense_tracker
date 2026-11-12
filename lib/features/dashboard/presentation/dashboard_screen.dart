@@ -8,6 +8,7 @@ import 'package:expense_tracker/features/dashboard/presentation/widgets/monthly_
 import 'package:expense_tracker/features/dashboard/presentation/widgets/spending_chart.dart';
 import 'package:expense_tracker/features/dashboard/presentation/widgets/dashboard_filter.dart';
 import 'package:expense_tracker/features/transactions/models/transaction_model.dart';
+import 'package:expense_tracker/features/dashboard/presentation/widgets/dashboard_header.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -18,6 +19,7 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   String selectedFilter = 'This Month';
+  bool isBalanceVisible = true;
 
   List<TransactionModel> _filterTransactions(
     List<TransactionModel> transactions,
@@ -115,10 +117,32 @@ class _DashboardScreenState extends State<DashboardScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Total Balance', style: TextStyle(fontSize: 16)),
-              const SizedBox(height: 8),
+              const DashboardHeader(userName: 'User'),
+              const SizedBox(height: 30),
+              Row(
+                children: [
+                  const Text('Total Balance', style: TextStyle(fontSize: 16)),
+                  const SizedBox(width: 6),
+                  IconButton(
+                    icon: Icon(
+                      isBalanceVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      size: 20,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        isBalanceVisible = !isBalanceVisible;
+                      });
+                    },
+                  ),
+                ],
+              ),
+              const SizedBox(height: 2),
               Text(
-                '₦ ${totalBalance.toStringAsFixed(2)}',
+                isBalanceVisible
+                    ? '₦ ${totalBalance.toStringAsFixed(2)}'
+                    : '₦ ********',
                 style: const TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
