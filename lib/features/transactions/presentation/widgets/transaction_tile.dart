@@ -91,6 +91,7 @@ class TransactionTile extends StatelessWidget {
               '${isIncome ? '+' : '-'}₦${transaction.amount.toStringAsFixed(2)}',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
+                fontSize: 14,
                 color: isIncome ? Colors.green : Colors.red,
               ),
             ),

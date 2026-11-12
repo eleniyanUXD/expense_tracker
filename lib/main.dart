@@ -1,3 +1,4 @@
+import 'package:expense_tracker/features/dashboard/presentation/dashboard_screen.dart';
 import 'package:expense_tracker/features/transactions/presentation/add_transaction_screen.dart';
 import 'package:expense_tracker/features/transactions/presentation/edit_transaction_screen.dart';
 import 'package:expense_tracker/features/transactions/presentation/transaction_list_screen.dart';
@@ -40,7 +41,7 @@ class ExpenseTrackerApp extends StatelessWidget {
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: TransactionListsScreen(),
+      home: DashboardScreen(),
     );
   }
 }
