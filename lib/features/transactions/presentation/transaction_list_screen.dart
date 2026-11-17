@@ -39,10 +39,6 @@ class _TransactionListsScreenState extends State<TransactionListsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
         title: const Text(
           'Transaction List',
           style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),

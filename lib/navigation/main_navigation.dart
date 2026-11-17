@@ -1,3 +1,4 @@
+import 'package:expense_tracker/features/transactions/presentation/transaction_list_screen.dart';
 import 'package:flutter/material.dart';
 import '../features/dashboard/presentation/dashboard_screen.dart';
 import 'package:expense_tracker/navigation/models/navigation_items.dart';
@@ -15,7 +16,7 @@ class _MainNavigationState extends State<MainNavigation> {
 
   final List<Widget> _screens = [
     const DashboardScreen(),
-    const Center(child: Text('Transactions')),
+    const TransactionListsScreen(),
     const Center(child: Text('Wallets')),
     const Center(child: Text('Budgets')),
     const Center(child: Text('Profile')),
@@ -38,7 +39,7 @@ class _MainNavigationState extends State<MainNavigation> {
       selectedIcon: Icons.account_balance_wallet,
     ),
     NavigationItem(
-      label: 'Budget',
+      label: 'Budgets',
       icon: Icons.pie_chart_outline,
       selectedIcon: Icons.pie_chart,
     ),

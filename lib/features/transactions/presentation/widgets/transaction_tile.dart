@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:expense_tracker/features/transactions/models/transaction_model.dart';
 import 'package:expense_tracker/features/transactions/presentation/transaction_provider.dart';
+import 'package:expense_tracker/features/transactions/presentation/edit_transaction_screen.dart';
 
 class TransactionTile extends StatelessWidget {
   final TransactionModel transaction;
@@ -67,6 +68,15 @@ class TransactionTile extends StatelessWidget {
         side: BorderSide(color: Colors.grey.shade300),
       ),
       child: ListTile(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  EditTransactionScreen(transaction: transaction),
+            ),
+          );
+        },
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
         leading: CircleAvatar(
           backgroundColor: isIncome

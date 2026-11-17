@@ -9,6 +9,7 @@ import 'package:expense_tracker/features/dashboard/presentation/widgets/spending
 import 'package:expense_tracker/features/dashboard/presentation/widgets/dashboard_filter.dart';
 import 'package:expense_tracker/features/transactions/models/transaction_model.dart';
 import 'package:expense_tracker/features/dashboard/presentation/widgets/dashboard_header.dart';
+import 'package:expense_tracker/features/transactions/presentation/add_transaction_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -250,6 +251,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
               const SizedBox(height: 20),
             ],
           ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AddTransactionScreen(),
+            ),
+          );
+        },
+        backgroundColor: Theme.of(context).primaryColor,
+        icon: const Icon(Icons.add, color: Colors.white),
+        label: const Text(
+          'Add Transaction',
+          style: TextStyle(color: Colors.white),
         ),
       ),
     );

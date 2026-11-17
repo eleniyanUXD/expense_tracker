@@ -1,7 +1,3 @@
-import 'package:expense_tracker/features/dashboard/presentation/dashboard_screen.dart';
-import 'package:expense_tracker/features/transactions/presentation/add_transaction_screen.dart';
-import 'package:expense_tracker/features/transactions/presentation/edit_transaction_screen.dart';
-import 'package:expense_tracker/features/transactions/presentation/transaction_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:expense_tracker/database/app_database.dart';

@@ -18,9 +18,9 @@ class BottomNavBar extends StatelessWidget {
     return NavigationBarTheme(
       data: NavigationBarThemeData(
         labelTextStyle: WidgetStateProperty.resolveWith<TextStyle>((
-          Set<MaterialState> states,
+          Set<WidgetState> states,
         ) {
-          if (states.contains(MaterialState.selected)) {
+          if (states.contains(WidgetState.selected)) {
             return TextStyle(
               color: Theme.of(context).primaryColor,
               fontWeight: FontWeight.bold,
@@ -32,7 +32,7 @@ class BottomNavBar extends StatelessWidget {
       child: NavigationBar(
         selectedIndex: selectedIndex,
         onDestinationSelected: onItemSelected,
-        indicatorColor: Theme.of(context).primaryColor.withOpacity(0.1),
+        indicatorColor: Colors.green.withValues(alpha: 0.15),
 
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
 
