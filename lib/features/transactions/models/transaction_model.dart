@@ -5,6 +5,7 @@ class TransactionModel {
   final String category;
   final String type;
   final DateTime date;
+  final String? walletId;
 
   TransactionModel({
     required this.id,
@@ -13,5 +14,6 @@ class TransactionModel {
     required this.category,
     required this.type,
     required this.date,
+    this.walletId,
   });
 }

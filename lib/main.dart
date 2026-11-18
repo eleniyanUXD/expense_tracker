@@ -2,24 +2,43 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:expense_tracker/database/app_database.dart';
 import 'package:expense_tracker/database/daos/transaction_dao.dart';
+import 'package:expense_tracker/database/daos/wallet_dao.dart';
 import 'package:expense_tracker/features/transactions/data/transaction_repository.dart';
 import 'package:expense_tracker/features/transactions/presentation/transaction_provider.dart';
+import 'package:expense_tracker/features/wallet/data/wallet_repository.dart';
+import 'package:expense_tracker/features/wallet/presentation/wallet_provider.dart';
 import 'package:expense_tracker/navigation/main_navigation.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Hive database first
+  // Initialize Hive database.
   await AppDatabase.init();
 
-  // Create the database layers
+  // Transaction database layers.
   final transactionDao = TransactionDao();
   final transactionRepository = TransactionRepository(transactionDao);
 
+  // Wallet database layers.
+  final walletDao = WalletDao();
+  final walletRepository = WalletRepository(walletDao);
+
   runApp(
-    ChangeNotifierProvider(
-      create: (_) =>
-          TransactionProvider(transactionRepository)..loadTransactions(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) =>
+              TransactionProvider(transactionRepository)..loadTransactions(),
+        ),
+
+        ChangeNotifierProxyProvider<TransactionProvider, WalletProvider>(
+          create: (_) => WalletProvider(walletRepository)..loadWallets(),
+          update: (_, transactionProvider, walletProvider) {
+            return walletProvider!
+              ..updateTransactions(transactionProvider.transactions);
+          },
+        ),
+      ],
       child: const ExpenseTrackerApp(),
     ),
   );

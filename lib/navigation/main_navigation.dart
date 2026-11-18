@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../features/dashboard/presentation/dashboard_screen.dart';
 import 'package:expense_tracker/navigation/models/navigation_items.dart';
 import 'widgets/bottom_nav_bar.dart';
+import '../features/wallet/presentation/wallet_screen.dart';
 
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
@@ -17,7 +18,7 @@ class _MainNavigationState extends State<MainNavigation> {
   final List<Widget> _screens = [
     const DashboardScreen(),
     const TransactionListsScreen(),
-    const Center(child: Text('Wallets')),
+    const WalletScreen(),
     const Center(child: Text('Budgets')),
     const Center(child: Text('Profile')),
   ];

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:expense_tracker/features/transactions/models/transaction_model.dart';
+import 'package:expense_tracker/features/transactions/presentation/transaction_provider.dart';
+import 'package:expense_tracker/features/wallet/models/wallet_model.dart';
+import 'package:expense_tracker/features/wallet/presentation/wallet_provider.dart';
 import 'widgets/transaction_form_field.dart';
 import 'widgets/transaction_type_selector.dart';
 import 'widgets/transaction_category_selector.dart';
 import 'widgets/transaction_date_picker.dart';
-import 'package:provider/provider.dart';
-import 'package:expense_tracker/features/transactions/models/transaction_model.dart';
-import 'package:expense_tracker/features/transactions/presentation/transaction_provider.dart';
 
 class AddTransactionScreen extends StatefulWidget {
   const AddTransactionScreen({super.key});
@@ -22,6 +24,8 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
 
   String _selectedType = 'expense';
   String _selectedCategory = 'Food';
+  String? _selectedWalletId;
+
   DateTime _selectedDate = DateTime.now();
   bool _isLoading = false;
 
@@ -46,7 +50,12 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
   Future<void> _saveTransaction() async {
     if (_isLoading) return;
 
-    if (!_formKey.currentState!.validate()) {
+    if (!_formKey.currentState!.validate()) return;
+
+    if (_selectedWalletId == null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Please select a wallet')));
       return;
     }
 
@@ -62,6 +71,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
         category: _selectedCategory,
         type: _selectedType,
         date: _selectedDate,
+        walletId: _selectedWalletId,
       );
 
       await context.read<TransactionProvider>().addTransaction(transaction);
@@ -88,6 +98,8 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final wallets = context.watch<WalletProvider>().wallets;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -100,7 +112,6 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
         ),
         centerTitle: true,
       ),
-
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Form(
@@ -143,6 +154,67 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                   return null;
                 },
               ),
+
+              const SizedBox(height: 24),
+
+              // Wallet selection
+              const Text(
+                'Select Wallet',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(height: 8),
+
+              if (wallets.isEmpty)
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey.shade300),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: const Text(
+                    'No wallets available. Please create a wallet first.',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                )
+              else
+                DropdownButtonFormField<String>(
+                  initialValue:
+                      wallets.any((wallet) => wallet.id == _selectedWalletId)
+                      ? _selectedWalletId
+                      : null,
+                  decoration: InputDecoration(
+                    hintText: 'Choose a wallet',
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 14,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    ),
+                  ),
+                  items: wallets.map((WalletModel wallet) {
+                    return DropdownMenuItem<String>(
+                      value: wallet.id,
+                      child: Text('${wallet.name} (${wallet.currency})'),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedWalletId = value;
+                    });
+                  },
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Please select a wallet';
+                    }
+                    return null;
+                  },
+                ),
 
               const SizedBox(height: 24),
 

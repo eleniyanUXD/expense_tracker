@@ -15,6 +15,7 @@ class TransactionDao {
       TransactionFields.category: transaction.category,
       TransactionFields.type: transaction.type,
       TransactionFields.date: transaction.date.toIso8601String(),
+      'walletId': transaction.walletId,
     });
   }
 
@@ -28,6 +29,7 @@ class TransactionDao {
         category: data[TransactionFields.category] as String,
         type: data[TransactionFields.type] as String,
         date: DateTime.parse(data[TransactionFields.date] as String),
+        walletId: data['walletId'] as String?,
       );
     }).toList();
   }
